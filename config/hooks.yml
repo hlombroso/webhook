@@ -1,0 +1,12 @@
+- id: webhook
+  execute-command: /var/opt/webhookd/scripts/echo.sh
+  command-working-directory: .
+  # response-message: I got the payload!
+- id: reboot
+  execute-command: /var/opt/webhookd/scripts/reboot.sh
+  command-working-directory: .
+  response-message: Reboot successfully
+- id: restart-mysql8
+  execute-command: /var/opt/webhookd/scripts/manage-mysql8.sh
+  command-working-directory: .
+  response-message: Reboot mysql8

@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  webhookd:
+    image: webhookd2
+    container_name: webhookd2
+    restart: unless-stopped
+    # command:  ["-verbose", "-hotreload", "-hooks=hooks.yml"]
+    command: -verbose -hooks=hooks.yml -hotreload
+    volumes:
+      - ./config:/var/opt/webhookd
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.webhookd2.entrypoints=web"
+      - "traefik.http.routers.webhookd2.rule=Host(`webhookd2.localhost`)"
+      - "traefik.http.routers.webhookd2.service=webhookd2"
+      - "traefik.http.services.webhookd2.loadbalancer.server.port=9000"
+
+networks:
+  proxy:
+    external: true
+    name: $DEFAULT_NETWORK
+  mysql_net:
+    external: true
